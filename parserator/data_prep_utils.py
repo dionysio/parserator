@@ -5,6 +5,7 @@ from lxml import etree
 import os
 import csv
 
+
 # appends a labeled list to an existing xml file
 # calls: appendListToXML, stripFormatting
 def appendListToXMLfile(labeled_list, module, filepath):
@@ -14,7 +15,7 @@ def appendListToXMLfile(labeled_list, module, filepath):
     #                                   ...           ]
 
     if os.path.isfile(filepath):
-        with open( filepath, 'r+' ) as f:
+        with open( filepath, 'r+', encoding='utf-8') as f:
             tree = etree.parse(filepath)
             collection_XML = tree.getroot()
             collection_XML = stripFormatting(collection_XML)
@@ -26,8 +27,8 @@ def appendListToXMLfile(labeled_list, module, filepath):
     parent_tag = module.PARENT_LABEL
     collection_XML = appendListToXML(labeled_list, collection_XML, parent_tag)
 
-    with open(filepath, 'w') as f :
-        f.write(etree.tostring(collection_XML, pretty_print = True)) 
+    with open(filepath, 'w', encoding='utf-8') as f :
+        f.write(etree.tostring(collection_XML, pretty_print = True).decode('utf-8'))
 
 
 # given a list of labeled sequences to an xml list, 
@@ -53,10 +54,9 @@ def sequence2XML(labeled_sequence, parent_tag) :
     sequence_xml = etree.Element(parent_tag)
 
     for token, label in labeled_sequence:
-        component_xml = etree.Element(label)
+        component_xml = etree.SubElement(sequence_xml, label)
         component_xml.text = token
         component_xml.tail = ' '
-        sequence_xml.append(component_xml)
     sequence_xml[-1].tail = ''
     return sequence_xml
 
@@ -73,7 +73,7 @@ def stripFormatting(collection) :
 
 # writes a list of strings to a file
 def list2file(string_list, filepath):
-    with open(filepath, 'wb') as csvfile:
-        writer = csv.writer(csvfile, doublequote=True, quoting=csv.QUOTE_MINIMAL)
+    with open(filepath, 'w', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, doublequote=True, quoting=csv.QUOTE_MINIMAL, lineterminator='\n')
         for string in string_list:
-            writer.writerow([string.encode('utf-8')])
+            writer.writerow([string])

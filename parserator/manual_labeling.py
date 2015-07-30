@@ -14,7 +14,7 @@ import re
 import csv
 from argparse import ArgumentParser
 from collections import OrderedDict
-
+from copy import deepcopy
 
 def consoleLabel(raw_strings, labels, module): 
     print('\nStart console labeling!\n')
@@ -24,7 +24,7 @@ def consoleLabel(raw_strings, labels, module):
     valid_responses = ['y', 'n', 's', 'f', '']
     finished = False
 
-    strings_left_to_tag = raw_strings.copy()
+    strings_left_to_tag = deepcopy(raw_strings)
     total_strings = len(raw_strings)
     tagged_strings = set([])
 
@@ -110,7 +110,7 @@ def naiveConsoleLabel(raw_strings, labels, module):
     valid_responses = ['t', 's', 'f', '']
     finished = False
 
-    strings_left_to_tag = raw_strings.copy()
+    strings_left_to_tag = deepcopy(raw_strings)
     total_strings = len(raw_strings)
     tagged_strings = set([])
 
@@ -193,17 +193,17 @@ def label(module, infile, outfile):
 
     # Check to make sure we can write to outfile
     if os.path.isfile(outfile):
-        with open(outfile, 'r+' ) as f:
+        with open(outfile, 'r+', encoding='utf-8') as f:
             try :
                 tree = etree.parse(f)
             except :
                 raise ValueError("%s does not seem to be a valid xml file"
                                  % outfile)
 
-    with open(infile, 'rU') as f :
+    with open(infile, 'r', encoding='utf-8') as f :
         reader = csv.reader(f)
-
-        strings = set([row[0].decode('utf-8') for row in reader])
+        next(reader)
+        strings = set([r[0] for r in reader])
 
     labels = module.LABELS
 

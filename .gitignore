@@ -55,3 +55,8 @@ docs/_build/
 
 # PyBuilder
 target/
+
+parserator/new  2.ahk
+setup.py
+*.bat
+docs/make.bat

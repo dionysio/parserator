@@ -27,7 +27,7 @@ def appendListToXMLfile(labeled_list, module, filepath):
     parent_tag = module.PARENT_LABEL
     collection_XML = appendListToXML(labeled_list, collection_XML, parent_tag)
 
-    with open(filepath, 'w', encoding='utf-8') as f :
+    with open(filepath, 'w+', encoding='utf-8') as f :
         f.write(etree.tostring(collection_XML, pretty_print = True).decode('utf-8'))
 
 
@@ -57,6 +57,7 @@ def sequence2XML(labeled_sequence, parent_tag) :
         component_xml = etree.SubElement(sequence_xml, label)
         component_xml.text = token
         component_xml.tail = ' '
+	
     sequence_xml[-1].tail = ''
     return sequence_xml
 
@@ -74,6 +75,6 @@ def stripFormatting(collection) :
 # writes a list of strings to a file
 def list2file(string_list, filepath):
     with open(filepath, 'w', encoding='utf-8') as csvfile:
-        writer = csv.writer(csvfile, doublequote=True, quoting=csv.QUOTE_MINIMAL, lineterminator='\n')
+        writer = csv.writer(csvfile, lineterminator='\n')
         for string in string_list:
             writer.writerow([string])

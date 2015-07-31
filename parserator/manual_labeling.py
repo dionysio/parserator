@@ -35,9 +35,9 @@ def consoleLabel(raw_strings, labels, module):
             print('\n(%s of %s)' % (i, total_strings))
             print('-'*50)
             print('STRING: %s' %raw_sequence)
-            
-            preds = module.parse(raw_sequence)
 
+            
+            preds = list(module.parse(raw_sequence))
             user_input = None 
             while user_input not in valid_responses :
 
@@ -78,8 +78,11 @@ def print_table(table):
 
 def manualTagging(preds, valid_input_tags):
     tagged_sequence = []
+    print(list(preds))
     for token, predicted_tag in preds:
+        print('for')
         while True:
+            print('while')
             print('What is \'%s\' ? If %s hit return' % (token, predicted_tag))
             user_choice = sys.stdin.readline().strip()
             if user_choice == '' :

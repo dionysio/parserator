@@ -30,7 +30,7 @@ def trainModel(training_data, module,
     for xseq, yseq in zip(X, Y):
         trainer.append(xseq, yseq)
 
-    trainer.train(module.__name__+'/'+module.MODEL_FILE)
+    trainer.train("D:/One/Documents/Python/pck-web/importer/matching/prodmatch/learned_settings.crfsuite")
 
 
 # given a list of xml training filepaths & a parser module,
